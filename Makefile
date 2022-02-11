@@ -1,7 +1,7 @@
 NAME = philo
 CC = clang 
 INC = philo.h
-FLAGS = -Wall -Wextra -Werror -pthread -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread
 SRCS =	philo.c				\
 		parsing.c		\
 		init_mutex.c		\

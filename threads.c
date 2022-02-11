@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 14:18:15 by user42            #+#    #+#             */
-/*   Updated: 2022/02/10 16:45:49 by user42           ###   ########.fr       */
+/*   Updated: 2022/02/11 01:12:07 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,26 @@
 void *check_death(void *data)
 {
 	t_philo *philo;
+	int 	philo_full;
 
+	philo_full = 0;
 	philo = (t_philo *)data;
 	while (!philo->main->a_death)
 	{
 		pthread_mutex_lock(&philo->philock);
-		if (philo->main->tt_die < (get_time() - philo->l_eat))
+		if (philo->name == 1)
+			philo_full = 0;
+		if (philo->eaten == philo->main->nbr_eat)
+			philo_full++;
+		if (((philo->main->tt_die < (get_time() - philo->l_eat))
+			&& (philo->eaten != philo->main->nbr_eat))
+			|| (philo_full == philo->main->nbr_philo))
 		{
 			pthread_mutex_lock(&philo->main->lock_death);
 			philo->main->a_death = 1;
 			pthread_mutex_unlock(&philo->main->lock_death);
-			say("died", philo, get_time() - philo->start, -1);
-		}
-		if (philo->eaten == philo->main->nbr_eat + 1)
-		{
-			pthread_mutex_lock(&philo->main->lock_death);
-			philo->main->a_death = 1;
-			pthread_mutex_unlock(&philo->main->lock_death);
+			if (philo_full != philo->main->nbr_philo)
+				say("died", philo, get_time() - philo->start, -1);
 		}
 		pthread_mutex_unlock(&philo->philock);
 		if (!philo->main->a_death)
