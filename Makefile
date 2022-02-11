@@ -2,13 +2,13 @@ NAME = philo
 CC = clang 
 INC = philo.h
 FLAGS = -Wall -Wextra -Werror -pthread
--fsanitize=address
 SRCS =	philo.c				\
-		parsing.c		\
+		parsing.c			\
 		init_mutex.c		\
 		create_threads.c	\
 		utils.c				\
-		threads.c			
+		threads.c			\
+		lockers.c
 	
 OBJS = $(SRCS:.c=.o)
 

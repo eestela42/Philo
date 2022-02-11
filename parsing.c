@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: eestela <eestela@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 16:52:20 by user42            #+#    #+#             */
-/*   Updated: 2022/02/10 16:03:53 by user42           ###   ########.fr       */
+/*   Updated: 2022/02/11 19:27:22 by eestela          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int	ft_atoi(const char *str)
 {
-	long int nbr;
-	int i;
-	int sign;
+	long int	nbr;
+	int			i;
+	int			sign;
 
 	i = 0;
-	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v' ||
-		str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
+	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
 		i++;
 	sign = 1;
 	if (str[i] == '-')
@@ -37,7 +37,7 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	if (nbr < -2147483648 || nbr > 2147483647)
-		return(0);
+		return (0);
 	return (nbr);
 }
 
@@ -79,11 +79,11 @@ int	ft_parsing(int ac, char **av, t_main *main)
 	while (i < ac)
 	{
 		if (!check_is_num(av[i]))
-			return(-9);
+			return (-9);
 		tab[i - 1] = ft_atoi(av[i]);
 		i++;
 	}
-	if ( ac == 5)
+	if (ac == 5)
 		tab[4] = -10;
 	i = 0;
 	main->nbr_philo = tab[0];
@@ -94,6 +94,6 @@ int	ft_parsing(int ac, char **av, t_main *main)
 	main->philock = NULL;
 	main->forks = NULL;
 	if (main->nbr_philo == 0)
-		return(-9);
-	return(0);
+		return (-9);
+	return (0);
 }

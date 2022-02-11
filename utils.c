@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: eestela <eestela@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 13:53:00 by user42            #+#    #+#             */
-/*   Updated: 2022/02/10 16:45:38 by user42           ###   ########.fr       */
+/*   Updated: 2022/02/11 19:49:05 by eestela          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long int	get_time()
+long int	get_time(void)
 {
-	struct timeval time;
+	struct timeval	time;
 
 	gettimeofday(&time, NULL);
 	return ((long int)time.tv_sec * 1000 + (long int)time.tv_usec / 1000);
 }
 
-void		say(char *str, t_philo *philo, long int time, int forks)
+void	say(char *str, t_philo *philo, long int time, int forks)
 {
 	if (ft_end(philo, forks))
 		return ;
@@ -29,7 +29,7 @@ void		say(char *str, t_philo *philo, long int time, int forks)
 	pthread_mutex_unlock(&philo->main->to_write);
 }
 
-int		ft_end(t_philo *philo, int forks)
+int	ft_end(t_philo *philo, int forks)
 {
 	if (forks == -1)
 		return (0);
@@ -53,7 +53,7 @@ int		ft_end(t_philo *philo, int forks)
 t_philo	*jump(t_philo *philo)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i != 2 && philo)
 	{
@@ -64,20 +64,4 @@ t_philo	*jump(t_philo *philo)
 		i++;
 	}
 	return (philo);
-}
-
-int	locker(pthread_mutex_t *mutex, int check)
-{
-	if (check)
-		return (0);
-	pthread_mutex_lock(mutex);
-	return (1);
-}
-
-int	unlocker(pthread_mutex_t *mutex, int check)
-{
-	if (check)
-		return (0);
-	pthread_mutex_unlock(mutex);
-	return (1);
 }

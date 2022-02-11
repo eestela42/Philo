@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_mutex.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: eestela <eestela@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 17:32:22 by user42            #+#    #+#             */
-/*   Updated: 2022/02/11 02:31:21 by user42           ###   ########.fr       */
+/*   Updated: 2022/02/11 19:47:03 by eestela          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,15 @@ int	ft_init_mutex(t_main *main)
 	return (0);
 }
 
+void	init_info(t_main *main, int name, t_philo *tmp)
+{
+	tmp->name = name;
+	tmp->eaten = 0;
+	tmp->main = main;
+	tmp->is_ended = 0;
+	tmp->philock = main->philock[name - 1];
+}
+
 t_philo	*ft_initializer(t_main *main, int name)
 {
 	t_philo	*tmp;
@@ -41,11 +50,7 @@ t_philo	*ft_initializer(t_main *main, int name)
 	tmp = malloc(sizeof(t_philo));
 	if (!tmp)
 		return (NULL);
-	tmp->name = name;
-	tmp->eaten = 0;
-	tmp->main = main;
-	tmp->is_ended = 0;
-	tmp->philock = main->philock[name - 1];
+	init_info(main, name, tmp);
 	if (!(name % 2))
 	{
 		tmp->first = &main->forks[(name - 1)];
@@ -61,13 +66,12 @@ t_philo	*ft_initializer(t_main *main, int name)
 		tmp->second = &main->forks[(name - 1)];
 		tmp->first = &main->forks[(name - 2)];
 	}
-	
 	return (tmp);
 }
 
 int	ft_init_philo(t_main *main)
 {
-	int	i;
+	int		i;
 	t_philo	*tmp;
 
 	i = 1;
