@@ -6,11 +6,27 @@
 /*   By: eestela <eestela@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 14:18:15 by user42            #+#    #+#             */
-/*   Updated: 2022/02/11 20:05:09 by eestela          ###   ########.fr       */
+/*   Updated: 2022/02/11 22:15:01 by eestela          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	sleeper(int us, t_philo *philo)
+{
+	long int	objectif;
+
+	objectif = get_time() + us;
+	pthread_mutex_lock(&philo->main->lock_death);
+	while (get_time() < objectif
+		&& !philo->main->a_death)
+	{
+		pthread_mutex_unlock(&philo->main->lock_death);
+		usleep(100);
+		pthread_mutex_lock(&philo->main->lock_death);
+	}
+	pthread_mutex_unlock(&philo->main->lock_death);
+}
 
 void	checker(t_philo *philo, int philo_full)
 {
@@ -48,13 +64,14 @@ void	*check_death(void *data)
 
 void	sleep_think(t_philo *philo)
 {
-	usleep(philo->main->tt_eat * 1000);
+	if (!philo->is_ended)
+		sleeper(philo->main->tt_eat, philo);
 	unlocker(philo->first, philo->is_ended);
 	unlocker(philo->second, philo->is_ended);
 	say("is sleeping", philo, get_time() - philo->start, 0);
-	usleep(philo->main->tt_sleep * 1000);
+	if (!philo->is_ended)
+		sleeper(philo->main->tt_sleep, philo);
 	say("is thinking", philo, get_time() - philo->start, 0);
-	usleep(2000);
 }
 
 void	*routine(void *data)
@@ -62,13 +79,13 @@ void	*routine(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
+	if (philo->main->nbr_philo == 1)
+	{
+		say("has taken a fork", philo, get_time() - philo->start, -1);
+		philo->is_ended = 1;
+	}
 	while (!philo->is_ended && philo->eaten != philo->main->nbr_eat)
 	{
-		if (philo->main->nbr_philo == 1)
-		{
-			say("has taken a fork", philo, get_time() - philo->start, -1);
-			philo->is_ended = 1;
-		}
 		locker(philo->first, philo->is_ended);
 		say("has taken a fork", philo, get_time() - philo->start, 1);
 		locker(philo->second, philo->is_ended);
