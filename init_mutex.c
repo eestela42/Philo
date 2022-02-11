@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_init_mutex.c                                    :+:      :+:    :+:   */
+/*   init_mutex.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 17:32:22 by user42            #+#    #+#             */
-/*   Updated: 2022/01/26 03:06:44 by user42           ###   ########.fr       */
+/*   Updated: 2022/02/11 02:31:21 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,17 @@ t_philo	*ft_initializer(t_main *main, int name)
 		tmp->first = &main->forks[(name - 1)];
 		tmp->second = &main->forks[(name - 2)];
 	}
-	else if (name != 1)
-	{
-		tmp->second = &main->forks[(name - 1)];
-		tmp->first = &main->forks[(name - 2)];
-	}
 	else if (name == 1)
 	{
 		tmp->first = &main->forks[main->nbr_philo - 1];
 		tmp->second = &main->forks[0];
 	}
+	else if (name != 1)
+	{
+		tmp->second = &main->forks[(name - 1)];
+		tmp->first = &main->forks[(name - 2)];
+	}
+	
 	return (tmp);
 }
 

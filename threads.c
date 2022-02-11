@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 14:18:15 by user42            #+#    #+#             */
-/*   Updated: 2022/02/11 01:12:07 by user42           ###   ########.fr       */
+/*   Updated: 2022/02/11 15:57:12 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,12 @@ void *routine(void *data)
 		}
 		unlocker(&philo->philock, philo->is_ended);
 		usleep(philo->main->tt_eat * 1000);
-		say("is sleeping", philo, get_time() - philo->start, 2);
 		unlocker(philo->first, philo->is_ended);
 		unlocker(philo->second, philo->is_ended);
+		say("is sleeping", philo, get_time() - philo->start, 0);
 		usleep(philo->main->tt_sleep * 1000);
 		say("is thinking", philo, get_time() - philo->start, 0);
+		usleep(2000);
 	}
 	//printf("%i has eaten %i times \n", philo->name, philo->eaten);
 	return (NULL);
